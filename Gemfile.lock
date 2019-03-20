@@ -24,15 +24,6 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
-    active_shipping (0.12.6)
-      active_utils (~> 2.2.0)
-      activesupport (>= 2.3.5)
-      builder
-      i18n
-      json (>= 1.5.1)
-    active_utils (2.2.3)
-      activesupport (>= 2.3.11)
-      i18n
     activejob (5.2.2.1)
       activesupport (= 5.2.2.1)
       globalid (>= 0.3.6)
@@ -125,7 +116,6 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
-    json (2.2.0)
     kaminari (1.1.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.1.1)
@@ -292,7 +282,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_shipping
   bootsnap (>= 1.1.0)
   bootstrap (~> 4.3.1)
   byebug
