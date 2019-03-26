@@ -1,0 +1,15 @@
+h1 Products for sale
+
+- @products.each do |product|
+  .well
+    .row
+      .col-sm-8
+        = product.title
+      .col-sm-4
+        .pull-right
+          = form_for(@order_item, remote: true) do |f|
+            div.form-control = f.hidden_field :product_id, value: product.id
+            h5 = product.price
+            div.form-group
+              = f.text_field :quantity, value: 1, min: 1, class: 'form-control'
+            = f.submit 'Add to cart',  class: 'btn btn-primary btn-sm'
