@@ -14,10 +14,8 @@ table
   tbody
     - @products.each do |product|
       tr
-        td = product.name
+        td = product.title
         td = product.price
-        td = product.description
-        td = product.quantity
         td = link_to 'Show', product
         td = link_to 'Edit', edit_product_path(product)
         td = link_to 'Destroy', product, data: { confirm: 'Are you sure?' }, method: :delete

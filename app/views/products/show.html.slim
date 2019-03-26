@@ -2,16 +2,14 @@ p#notice = notice
 
 p
   strong Name:
-  = @product.name
+  = @product.title
 p
   strong Price:
   = @product.price
-p
-  strong Description:
-  = @product.description
-p
-  strong Quantity:
-  = @product.quantity
+- if @product.product_images?
+  ul
+    - @product.product_images.each do |image|
+      li = link_to(image_tag(image.thumb.url, alt: 'image'), image.url, target: '_blank')
 
 = link_to 'Edit', edit_product_path(@product)
 '  |
