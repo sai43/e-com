@@ -1,0 +1,17 @@
+nav.navbar.navbar-expand-lg.navbar-light.bg-light
+  button.navbar-toggler aria-controls="navbarToggler" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarToggler" data-toggle="collapse" type="button"
+    span.navbar-toggler-icon
+  #navbarToggler.collapse.navbar-collapse
+    = link_to 'EComm', root_path, class: 'navbar-brand px-md-5'
+    form.form-inline.ml-5.mr-5
+      input.form-control.mr-sm-2 aria-label="Search" placeholder="Search" type="search" /
+      button.btn.btn-outline-success.my-2.my-sm-0 type="submit"  Search
+    ul.navbar-nav.pull-right.my-2.my-lg-0
+      li.nav-item
+        = link_to 'My Profile', products_path, class: 'nav-link'
+      li.nav-item.active
+        = link_to 'Products', products_path, class: 'nav-link'
+        span.sr-only (current)
+      li.nav-item
+        a.nav-link href="#"  Cart
+

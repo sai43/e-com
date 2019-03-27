@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
 
+  namespace :admin do
+    resources :products
+    resources :users
+  end
+
   resources :products
   resources :order_items
   resource :carts, only: [:show]
