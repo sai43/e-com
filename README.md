@@ -1,24 +1,19 @@
-# README
+# E-comm
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Steps to setup the application, please follow the below commands.
 
-Things you may want to cover:
 
-* Ruby version
+* git clone https://github.com/sai43/e-com.git
 
-* System dependencies
+* bundle install
 
-* Configuration
+* provide postgresql username and password in database.yml file
 
-* Database creation
+* rails db:create
 
-* Database initialization
+* rails db:migrate
 
-* How to run the test suite
+* rails db:seed
 
-* Services (job queues, cache servers, search engines, etc.)
+* navigate application to http://localhost:3000
 
-* Deployment instructions
-
-* ...
