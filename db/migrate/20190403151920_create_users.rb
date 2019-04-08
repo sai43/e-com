@@ -3,8 +3,8 @@ class CreateUsers < ActiveRecord::Migration[5.2]
     create_table :users do |t|
       t.string :name
       t.string :email
-      t.boolean :admin
-      t.boolean :activated
+      t.boolean :admin, default: false
+      t.boolean :activated, default: false
       t.datetime :reset_sent_at
       t.datetime :activated_at
       t.string :password_digest

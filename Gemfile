@@ -76,6 +76,8 @@ gem 'faker', '~> 1.8', '>= 1.8.7'
 gem 'nokogiri'
 gem 'figaro'
 gem 'email_validator', '~> 1.6'
+gem 'webpacker'
+gem 'react-rails'
 
 # gem 'activemerchant'
 # gem 'active_shipping'

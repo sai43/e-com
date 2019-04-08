@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 2019_04_03_162447) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.string "status"
+    t.string "status", default: "Created"
     t.string "description"
     t.string "pay_method", default: "$"
     t.datetime "created_at", null: false

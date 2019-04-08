@@ -7,7 +7,7 @@ h1 Products for sale
         = product.title
       .col-sm-3.offset-3
         .pull-right
-          = form_for(@order_item, remote: true) do |f|
+          = form_for(@line_item, remote: true) do |f|
             div.form-control = f.hidden_field :product_id, value: product.id
             h5 = product.price
             div.form-group

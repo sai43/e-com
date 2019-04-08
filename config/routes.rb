@@ -7,7 +7,8 @@ Rails.application.routes.draw do
   end
 
   resources :products
-  resources :order_items
+  resources :line_items
+  resources :orders
   resource :carts, only: [:show]
 
   root 'home#index'

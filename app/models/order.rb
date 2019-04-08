@@ -3,6 +3,7 @@ class Order < ApplicationRecord
   has_many :line_items, dependent: :destroy
   belongs_to :user
 
+  # status = %i[Ordered and Approved, Delivered, Return, Return Approved, Pickup, Refund]
 
   # before_save :set_sub_total
 
