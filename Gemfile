@@ -78,6 +78,10 @@ gem 'figaro'
 gem 'email_validator', '~> 1.6'
 gem 'webpacker'
 gem 'react-rails'
+gem 'graphql'
+
 
 # gem 'activemerchant'
 # gem 'active_shipping'
+
+gem 'graphiql-rails', group: :development
