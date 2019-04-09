@@ -9,5 +9,17 @@ module Types
     def test_field
       "Hello World!"
     end
+    #
+    # field :products, ProductType, null: false do
+    #   description "list of products"
+    # end
+    #
+
+    field :products, [Types::ProductType], null: false
+
+    def products
+      Product.all
+    end
+
   end
 end
