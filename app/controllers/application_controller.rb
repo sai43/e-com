@@ -1,9 +1,20 @@
 class ApplicationController < ActionController::Base
   include ApplicationHelper
-  protect_from_forgery with: :exception
+  # protect_from_forgery with: :null_session
+  # protect_from_forgery unless: -> { request.format.json? }
+  protect_from_forgery unless: -> { request.format.json? || request.request_method == "OPTIONS" }
+
   include SessionsHelper
 
-  before_action :set_cart
+  # include CorsHelper
+  # before_action :cors_set_access_control_headers
+  # before_action :cors_preflight_check
+
+  # skip_before_filter :verify_authenticity_token
+  # protect_from_forgery prepend: true, with: :exception
+  # before_action :authenticate_user!
+  # before_action :set_bug, only: [:show, :edit, :update]
+  # before_action :set_cart
 
   private
 

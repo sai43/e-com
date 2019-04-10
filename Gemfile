@@ -85,3 +85,4 @@ gem 'jwt'
 # gem 'active_shipping'
 
 gem 'graphiql-rails', group: :development
+gem 'rack-cors', :require => 'rack/cors'
