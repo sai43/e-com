@@ -36,8 +36,8 @@ export default  class ProductsList extends  Component {
         return (
           <div>
               {products.map((product, index )=>(
-                  <h2>{ product.title }</h2>
-              ))}
+                  <h2>{ product.title } - { product.price }</h2>
+                  ))}
           </div>
         );
     }

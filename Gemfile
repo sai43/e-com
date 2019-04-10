@@ -61,6 +61,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'devise'
 gem 'cancancan', '~> 2.0'
+gem 'rolify'
 gem 'kaminari'
 gem 'factory_bot_rails'
 gem 'carrierwave', '~> 1.0'
