@@ -1,7 +1,15 @@
-import React, {Component} from 'react'
+import React from 'react'
+import BaseComponent from "../../bundles/BaseComponent";
 
-export default  class ProductsList extends  Component {
+export default  class ProductsList extends  BaseComponent {
 
+    // constructor(props) {
+    //     super(props)
+    //     this.state = {
+    //         ...this.state,
+    //         products: props.products
+    //     }
+    // };
     state = {
         products: []
     };
@@ -32,7 +40,7 @@ export default  class ProductsList extends  Component {
         })
     };
     render () {
-        const products = this.state.products
+        const products = this.state.products;
         return (
           <div>
               {products.map((product, index )=>(
