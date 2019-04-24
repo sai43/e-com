@@ -19,10 +19,10 @@ module CorsHelper
   end
 
   def is_valid_cors_request?
-    byebug
     # Only returns true if the top-level domain is the same
     domain = 'http://localhost:3000'
     env['HTTP_ORIGIN'].to_s.gsub(/:\d+$/,'').ends_with?(domain)
+    true
   end
 
 end

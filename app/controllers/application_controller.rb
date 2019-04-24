@@ -6,17 +6,32 @@ class ApplicationController < ActionController::Base
 
   include SessionsHelper
 
-  # include CorsHelper
-  # before_action :cors_set_access_control_headers
-  # before_action :cors_preflight_check
+  include CorsHelper
+  before_action :cors_set_access_control_headers
+  before_action :cors_preflight_check
+
+  acts_as_token_authentication_handler_for User, if: :is_valid_cors_request?
+  before_action :authenticate_user!, unless: :is_valid_cors_request?
 
   # skip_before_filter :verify_authenticity_token
   # protect_from_forgery prepend: true, with: :exception
-  # before_action :authenticate_user!
   # before_action :set_bug, only: [:show, :edit, :update]
   # before_action :set_cart
 
+  after_action :set_vary
+
+
   private
+
+  def set_vary
+    response.headers['Vary'] = 'Accept'
+  end
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit :accept_invitation, keys: [:first_name, :last_name]
+    devise_parameter_sanitizer.permit :account_update, keys: [:first_name, :last_name, :email, :password, :password_confirmation]
+    devise_parameter_sanitizer.permit :sign_up, keys: [:first_name, :last_name, :email, :password, :password_confirmation]
+  end
 
   def set_cart
     if session[:cart_id]

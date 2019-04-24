@@ -348,6 +348,7 @@ DEPENDENCIES
   file_validators
   graphiql-rails
   graphql
+  haml
   jbuilder (~> 2.5)
   jquery-rails
   jwt
