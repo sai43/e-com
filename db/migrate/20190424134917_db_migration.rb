@@ -27,7 +27,7 @@ class DbMigration < ActiveRecord::Migration[5.2]
       t.references :role
     end
 
-    add_index(:roles, [ :name, :resource_type, :resource_id ])
+    # add_index(:roles, [ :name, :resource_type, :resource_id ])
     add_index(:users_roles, [ :user_id, :role_id ], name: "index_users_roles_on_user_id_and_role_id", using: :btree)
 
     create_table "sessions" do |t|
@@ -75,7 +75,8 @@ class DbMigration < ActiveRecord::Migration[5.2]
       t.string     "confirmation_token"
       t.datetime "confirmed_at"
       t.datetime "confirmation_sent_at"
-      t.boolean  "super_user",                          default: false, null: false
+      t.boolean  "super_user",                default: false, null: false
+      t.string   :user_type, default: User.types.advanced
     end
 
     add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
@@ -103,6 +104,7 @@ class DbMigration < ActiveRecord::Migration[5.2]
       t.string :status , default: 'Created'
       t.string :description
       t.string :pay_method, default: '$'
+      t.references :user, foreign_key: true
       t.timestamps
     end
 

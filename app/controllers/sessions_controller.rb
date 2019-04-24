@@ -1,47 +1,39 @@
-class SessionsController < ApplicationController
-
+class SessionsController < Devise::SessionsController
+  # layout 'unauthorized'
+  respond_to :html, :json
+  skip_before_filter :verify_authenticity_token, :only => [:create]
+  skip_before_action :authenticate_user!
 
   def new
+    super do |resource|
+      if params[:redirect_to].present?
+        session[:redirect_to] = params[:redirect_to]
+      end
+    end
   end
 
-  # POST
   def create
-    user = User.find_by(email: params[:session][:email].downcase)
-    if authenticated?(user)
-      perform_authenticated_action(user)
-    else
-      flash.now[:danger] = 'Invalid email/password combination'
-      render 'new'
+    respond_to do |format|
+      format.html { super }
+      format.json {
+        warden.authenticate!(:scope => resource_name, :recall => "#{controller_path}#new")
+        render :status => 200, :json => { :success => "true", :token => current_user.authentication_token }
+      }
     end
   end
 
   def destroy
-    log_out if logged_in?
-    redirect_to root_url
-  end
-
-  # Destroy
-  def logout; end
-
-  private
-
-  def authenticated?(user)
-    user && user.authenticate(params[:session][:password])
-  end
-
-  def perform_authenticated_action(user)
-    if user.activated?
-      log_in user
-      params[:session][:remember_me] == '1' ? remember(user) : forget(user)
-
-      # redirect_back_or user
-      redirect_back_or root_url
-    else
-      message = 'Account not activated. '
-      message += 'Check your email for the activation link.'
-      flash[:warning] = message
-      redirect_to root_url
+    respond_to do |format|
+      format.html { super }
+      format.json {
+        signed_out = (Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name))
+        render :json => {
+            'csrfParam' => request_forgery_protection_token,
+            'csrfToken' => form_authenticity_token
+        }
+      }
     end
   end
 
 end
+

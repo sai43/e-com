@@ -1,13 +1,10 @@
 class UserMailer < ApplicationMailer
 
-  def account_activation(user)
-    @user = user
-    mail to: user.email, subject: 'Account activation'
-  end
+  default :from => "no-reply@e-com.io"
 
-  def password_reset(user)
+  def welcome(user)
     @user = user
-    mail to: user.email, subject: 'Password Reset'
+    mail(to: user.email, subject: "Welcome to E-com website").deliver_now
   end
 
 end

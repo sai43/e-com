@@ -8,38 +8,36 @@
 
 puts "...... DB setup initiated...."
 
-User.create!(name:  'Admin User',
+User.create!(first_name:  'Admin',
+             last_name: 'User',
              email: 'admin@e-com.org',
              password:              '123456',
              password_confirmation: '123456',
-             admin:     true,
-             activated: true,
-             activated_at: Time.zone.now)
+             super_user: true
+            )
 
-User.create!(name:  'Sai Ch',
+User.create!(first_name:  'Sai',
+             last_name: 'Ch',
              email: 'csai@e-com.org',
              password:              '123456',
              password_confirmation: '123456',
-             admin:     false,
-             activated: true,
-             activated_at: Time.zone.now)
+             super_user: true
+            )
 
-100.times do |n|
-  name  = Faker::Name.unique.name
+10.times do |n|
   email = Faker::Internet.email
   password = Faker::Internet.password(10, 20, true, true)
-  User.create!(name:  name,
+  User.create!(first_name:  Faker::Name.unique.name,
+               last_name: Faker::Name.unique.name,
                email: email,
                password:              password,
                password_confirmation: password,
-               admin: false,
-               activated: true,
-               activated_at: Time.zone.now)
+               super_user: false,
+               )
 end
 
 
 puts "Total number of users: #{User.all.count}"
-puts "User names: #{User.all.pluck("name", "email")}"
 
 Product.create({:title=>"Samsung S9", :price => 89899.10})
 Product.create({:title=>"Google Pixel2", :price => 92899.99})
@@ -48,14 +46,17 @@ Product.create({:title=>"One Plus 7T", :price => 59999.00})
 Product.create({:title=>"Poco F1", :price => 19999.90})
 Product.create({:title=>"Redmi 7Pro", :price => 14000.00})
 
-
-100.times do |pr|
-  product_images = []
-  product_images << Faker::Avatar.image << Faker::Avatar.image << Faker::Avatar.image
-  Product.create!({title: Faker::Appliance.brand, price: Faker::Number.decimal(Faker::Number.within(1..5), 2), remote_product_images_urls: product_images })
-  puts "#{pr} product created."
+threads = []
+15.times do |pr|
+  threads << Thread.new do
+    product_images = []
+    product_images << Faker::Avatar.image << Faker::Avatar.image << Faker::Avatar.image
+    Product.create!({title: Faker::Appliance.brand, price: Faker::Number.decimal(Faker::Number.within(1..5), 2), remote_product_images_urls: product_images })
+    puts "#{pr} product created."
+  end
 end
 
+threads.map(&:join)
 
 puts "Total number of products: #{Product.all.count}"
 puts "Product names: #{Product.all.pluck("title")}"
@@ -65,13 +66,13 @@ puts "Product names: #{Product.all.pluck("title")}"
 # Create Cart with user_id
 # Create LineItem with quantity, order, cart, product id’s
 
-100.times do |ord|
+10.times do |ord|
   order = Order.new
   cart = Cart.new
   line_item = LineItem.new
 
-  user = User.find(Faker::Number.within(1..100))
-  product = Product.find(Faker::Number.within(1..100))
+  user = User.find(Faker::Number.within(1..8))
+  product = Product.find(Faker::Number.within(1..8))
 
   order.user_id = user.id
   order.save!

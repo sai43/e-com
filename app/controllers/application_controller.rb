@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   include CorsHelper
   before_action :cors_set_access_control_headers
   before_action :cors_preflight_check
+  before_filter :store_location
 
   acts_as_token_authentication_handler_for User, if: :is_valid_cors_request?
   before_action :authenticate_user!, unless: :is_valid_cors_request?
@@ -44,19 +45,43 @@ class ApplicationController < ActionController::Base
     session[:cart_id] = @current_cart.id
   end
 
-  # Confirms a logged-in user.
-  def logged_in_user
-    return if logged_in?
-
-    store_location
-    flash[:danger] = 'Please log in.'
-    redirect_to login_url
+  def store_location
+    # store last url - this is needed for post-login redirect to whatever the user last visited.
+    if (request.fullpath != "/users/sign_in" && \
+          request.fullpath != "/users/sign_up" && \
+          request.fullpath != "/users/password" && \
+          !request.xhr?) # don't store ajax calls
+      session[:previous_url] = request.fullpath
+    end
   end
 
-  def user_is_admin
-    return if logged_in? && current_user.admin?
 
-    flash[:info] = "You don't have the privilages for this action!"
-    redirect_back(fallback_location: root_url)
+  def after_sign_in_path_for(resource)
+    session.delete(:redirect_to) || session.delete(:previous_url) || root_path
   end
+
+  # TODO: review what this does
+  rescue_from CanCan::AccessDenied do |exception|
+    if user_signed_in?
+      respond_to do |format|
+        format.json { render json: { errors: [exception.message] }, status: 403 }
+        format.html {
+          if !current_user.active?
+            redirect_to '/users/sign_out?notice=true'
+          elsif request.env['HTTP_REFERER'].present?
+            redirect_to :back, alert: exception.message
+          else
+            redirect_to root_url, alert: exception.message
+          end
+        }
+      end
+    else
+      respond_to do |format|
+        format.json { render json: { error: 'Please refresh page.' }, status: 401 }
+        format.html { redirect_to new_user_session_path(redirect_to: request.original_url) }
+      end
+    end
+  end
+
+
 end

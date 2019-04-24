@@ -9,80 +9,117 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  has_many :users_roles
   has_many :orders, dependent: :destroy
 
-  attr_accessor :remember_token, :activation_token, :reset_token
+  before_save :ensure_authentication_token
 
   before_save { email.downcase! }
-  before_create :create_activation_digest
   before_save { self.email = email.downcase }
-  validates :name, presence: true, length: { maximum: 50 }
-  validates :email, presence: true, length: { maximum: 255 }, email: true,
+
+  validates :email, presence: true,
+            length: { maximum: 255 },
+            email: true,
             format: /@/,
             uniqueness: { case_sensitive: false }
-  has_secure_password
+
+  # after_save :check_mail
+
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
 
-  def self.digest(string)
-    cost = if ActiveModel::SecurePassword.min_cost
-             BCrypt::Engine::MIN_COST
-           else
-             BCrypt::Engine.cost
-           end
-    BCrypt::Password.create(string, cost: cost)
+  after_create :set_user_type
+  # after_create :send_welcome_email
+
+  def check_mail
+    @user =  ( User.exists?(email: self.email) ? User.find_by_email(self.email) : User.create(email: self.email, password: self.password, password_confirmation: self.password_confirmation) ) if self.email.presence
   end
 
-  def self.new_token
-    SecureRandom.urlsafe_base64
+  def self.types
+    @@types =  OpenStruct.new({
+                                  advanced: 'advanced'.freeze,
+                                  standard: 'standard'.freeze
+                              }).freeze
   end
 
-  def remember
-    self.remember_token = User.new_token
-    update_attribute(:remember_digest, User.digest(remember_token))
+  scope :active, -> { where(active: true) }
+
+  def standard
+    self.user_type == User.types.standard
   end
 
-  def authenticated?(attribute, token)
-    digest = send("#{attribute}_digest")
-    return false if digest.nil?
-
-    BCrypt::Password.new(digest).is_password?(token)
+  def standard?
+    standard
   end
 
-  def forget
-    update_attribute(:remember_digest, nil)
+  def advanced
+    advanced?
   end
 
-  def activate
-    update_columns(activated: true, activated_at: Time.zone.now)
+  def advanced?
+    !standard?
   end
 
-  def send_activation_email
-    UserMailer.account_activation(self).deliver_now
+  def full_name
+    "#{first_name} #{last_name}"
   end
 
-  def create_reset_digest
-    self.reset_token = User.new_token
-    update_columns(reset_digest: User.digest(reset_token),
-                   reset_sent_at: Time.zone.now)
+  def full_name_or_email
+    return email if first_name.blank? && last_name.blank?
+    full_name
   end
 
-  def send_password_reset_email
-    UserMailer.password_reset(self).deliver_now
+  alias_method :name, :full_name_or_email
+  alias_method :text, :full_name_or_email
+
+  def as_json(options = {})
+    super({
+              only: [:id, :first_name, :last_name, :email],
+              methods: [:full_name_or_email, :name, :text, :standard],
+              include: {
+                  :users_roles=>{
+                      :include=>[:role]
+                  }
+              }
+          }.merge(options))
   end
 
-  def password_reset_expired?
-    reset_sent_at < 2.hours.ago
+  def role_for_resource(resource)
+    Role.where(resource: resource).first
   end
 
   def self.search(search)
     where('name LIKE ? AND activated = ?', "%#{search}%", true)
   end
 
+  # Make sure the user has an authentication token
+  def ensure_authentication_token
+    if authentication_token.blank?
+      self.authentication_token = generate_authentication_token
+    end
+  end
+
   private
 
-  def create_activation_digest
-    self.activation_token  = User.new_token
-    self.activation_digest = User.digest(activation_token)
+  def set_user_type
+    if self.email =~ /e-com.(com | io)$/
+      self.user_type = User.types.advanced
+    else
+      self.user_type = User.types.standard
+    end
+  end
+
+  def send_welcome_email
+    #Send a welcome email if this user is not in the process of confirming their email
+    if accepted_or_not_invited?
+      UserMailer.welcome(self)
+    end
+  end
+
+  def generate_authentication_token
+    loop do
+      token = Devise.friendly_token
+      break token unless User.where(authentication_token: token).first
+    end
   end
 
 end
