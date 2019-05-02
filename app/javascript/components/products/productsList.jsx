@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 
-export default  class ProductsList extends  Component {
+import Card from './card'
+
+class ProductsList extends  Component {
 
     state = {
         products: []
@@ -31,14 +33,17 @@ export default  class ProductsList extends  Component {
             this.setState({products: response.data.products})
         })
     };
+
     render () {
-        const products = this.state.products
+        const products = this.state.products;
         return (
           <div>
-              {products.map((product, index )=>(
-                  <h2>{ product.title } - { product.price }</h2>
-                  ))}
+              <Card />
+              {products.map((product, index )=>( <h2>{ product.title } - { product.price }</h2> ))}
           </div>
         );
     }
+
 }
+
+export default ProductsList;
