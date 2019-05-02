@@ -2,12 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types';
 import ProductCard from './productCard'
 import { withStyles } from '@material-ui/core/styles';
-import GridList from '@material-ui/core/GridList';
-// import GridListTile from '@material-ui/core/GridListTile';
-// import GridListTileBar from '@material-ui/core/GridListTileBar';
-// import IconButton from '@material-ui/core/IconButton';
-// import StarBorderIcon from '@material-ui/icons/StarBorder';
-// import tileData from './tileData';
+import Grid from '@material-ui/core/Grid';
 
 const styles = theme => ({
     root: {
@@ -16,13 +11,6 @@ const styles = theme => ({
         justifyContent: 'space-around',
         overflow: 'hidden',
         backgroundColor: theme.palette.background.paper,
-    },
-    gridList: {
-        flexWrap: 'nowrap',
-        // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-        transform: 'translateZ(0)',
-        width: 960,
-        height: 600,
     },
     title: {
         color: theme.palette.primary.light,
@@ -52,11 +40,13 @@ class ProductsList extends  Component {
         const products = this.state.products;
         return (
             <div className={classes.root}>
-                <GridList cellHeight={160} className={classes.gridList} cols={3}>
-                    { products.map((item, index )=>(
-                        <ProductCard key={index} product={item} />
+                <Grid container spacing={24} style={{padding: 24}}>
+                    { products.map((currentProduct, index )=>(
+                        <Grid item xs={12} sm={6} lg={4} xl={3}>
+                            <ProductCard key={index} product={currentProduct} />
+                        </Grid>
                     ))}
-                </GridList>
+                </Grid>
             </div>
         );
     }
