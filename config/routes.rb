@@ -4,6 +4,12 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get 'products/index'
+      resources :users
+      resources :products
+      resources :products
+      resources :line_items
+      resources :orders
+      resource :carts, only: [:show]
     end
   end
 

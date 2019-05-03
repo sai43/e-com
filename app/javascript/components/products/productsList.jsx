@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ProductCard from './productCard'
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Login from '../sessions/new'
 
 const styles = theme => ({
     root: {
@@ -40,6 +41,7 @@ class ProductsList extends  Component {
         const products = this.state.products;
         return (
             <div className={classes.root}>
+                <Login/>
                 <Grid container spacing={24} style={{padding: 24}}>
                     { products.map((currentProduct, index )=>(
                         <Grid item xs={12} sm={6} lg={4} xl={3}>
