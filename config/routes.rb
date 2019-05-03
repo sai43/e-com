@@ -6,10 +6,12 @@ Rails.application.routes.draw do
       get 'products/index'
       resources :users
       resources :products
-      resources :products
       # resources :line_items
       # resources :orders
       # resource :carts, only: [:show]
+      post 'auth/login', to: 'authentication#authenticate'
+      post 'signup', to: 'users#create'
+
       resources :todos do
         resources :items
       end
