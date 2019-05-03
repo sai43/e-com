@@ -7,9 +7,12 @@ Rails.application.routes.draw do
       resources :users
       resources :products
       resources :products
-      resources :line_items
-      resources :orders
-      resource :carts, only: [:show]
+      # resources :line_items
+      # resources :orders
+      # resource :carts, only: [:show]
+      resources :todos do
+        resources :items
+      end
     end
   end
 

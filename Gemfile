@@ -48,13 +48,20 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
-group :test do
-  # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '>= 2.15'
-  gem 'selenium-webdriver'
-  # Easy installation and use of chromedriver to run system tests with Chrome
-  gem 'chromedriver-helper'
+group :development, :test do
+  gem 'rspec-rails', '~> 3.5'
 end
+
+group :test do
+  gem 'factory_bot_rails', '~> 4.0'
+  gem 'shoulda-matchers', '~> 3.1'
+  gem 'faker'
+  gem 'database_cleaner'
+  gem 'chromedriver-helper'
+  gem 'selenium-webdriver'
+  gem 'capybara', '>= 2.15'
+end
+
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
@@ -63,7 +70,6 @@ gem 'devise'
 gem 'cancancan', '~> 2.0'
 gem 'rolify'
 gem 'kaminari'
-gem 'factory_bot_rails'
 gem 'carrierwave', '~> 1.0'
 gem 'mini_magick'
 gem 'file_validators'
@@ -73,7 +79,6 @@ gem 'bootstrap', '~> 4.3.1'
 gem 'slim-rails'
 gem 'rails_admin'
 # gem 'bcrypt', git: 'https://github.com/codahale/bcrypt-ruby.git', :require => 'bcrypt'
-gem 'faker', '~> 1.8', '>= 1.8.7'
 gem 'nokogiri'
 gem 'figaro'
 gem 'email_validator', '~> 1.6'
