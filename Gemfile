@@ -85,6 +85,8 @@ gem 'webpacker'
 gem 'react-rails'
 gem 'graphql'
 gem 'jwt'
+gem 'will_paginate', '~> 3.1.0'
+gem 'active_model_serializers', '~> 0.10.0'
 
 # gem 'activemerchant'
 # gem 'active_shipping'

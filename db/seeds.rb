@@ -88,4 +88,12 @@ puts "Product names: #{Product.all.pluck("title")}"
   line_item.save!
 end
 
+50.times do
+  threads << Thread.new do
+    todo = Todo.create(title: Faker::Lorem.word, created_by: User.first.id)
+    todo.items.create(name: Faker::Lorem.word, done: false)
+  end
+end
+threads.map(&:join)
+
 puts "...... DB setup completed...."
