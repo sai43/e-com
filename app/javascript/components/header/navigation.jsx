@@ -17,7 +17,6 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import ProductsList from "../products/productsList";
-import { BrowserRouter, Route } from 'react-router-dom';
 
 const styles = theme => ({
     root: {

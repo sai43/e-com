@@ -58,7 +58,8 @@ class ProductCard extends Component {
         super(props);
         this.state = {
             product: props.product,
-            expanded: false
+            expanded: false,
+            anchorEl: null,
         };
     }
 
@@ -68,7 +69,7 @@ class ProductCard extends Component {
 
     render() {
         const { classes, product } = this.props;
-
+        const { anchorEl } = this.state;
         return (
             <Card className={classes.card}>
                 <CardHeader
