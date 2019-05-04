@@ -16,6 +16,8 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Button from '@material-ui/core/Button';
+import moment from 'moment';
 
 const styles = theme => ({
     card: {
@@ -41,6 +43,13 @@ const styles = theme => ({
     avatar: {
         backgroundColor: red[500],
     },
+    button: {
+        margin: '5px'
+    },
+    title: {
+        fontSize: '20px',
+        fontWeight: 'bold'
+    }
 });
 
 class ProductCard extends Component {
@@ -53,7 +62,6 @@ class ProductCard extends Component {
         };
     }
 
-
     handleExpandClick = () => {
         this.setState(state => ({ expanded: !state.expanded }));
     };
@@ -65,36 +73,36 @@ class ProductCard extends Component {
             <Card className={classes.card}>
                 <CardHeader
                     avatar={
-                        <Avatar aria-label="Recipe" className={classes.avatar}>
-                            R
+                        <Avatar aria-label="product" className={classes.avatar}>
+                            E
                         </Avatar>
                     }
                     action={
                         <IconButton>
                             <MoreVertIcon />
+                            <FavoriteIcon />
+                            <ShareIcon />
                         </IconButton>
                     }
-                    title= { product.title }
-                    subheader="September 14, 2016"
                 />
                 <CardMedia
                     className={classes.media}
-                    image= { product.product_images.length > 0 ? product.product_images[0].medium.url : '/paella.jpg'}
+                    image= { product.product_images.length > 0 ? product.product_images[0].medium.url : '/phone.jpg'}
                     title={ product.title }
                 />
                 <CardContent>
-                    <Typography component="p">
-                        This impressive paella is a perfect party dish and a fun meal to cook together with your
-                        guests. Add 1 cup of frozen peas along with the mussels, if you like.
-                    </Typography>
+                    <Typography className={classes.title}>{ product.title }</Typography>
+                    <Typography> { moment(product.updated_at).format('MMMM-DD-YYYY')} </Typography>
+                    <Typography component="p">Black Strap, size regular</Typography>
                 </CardContent>
+
                 <CardActions className={classes.actions} disableActionSpacing>
-                    <IconButton aria-label="Add to favorites">
-                        <FavoriteIcon />
-                    </IconButton>
-                    <IconButton aria-label="Share">
-                        <ShareIcon />
-                    </IconButton>
+                    <Button variant="contained" color="primary" className={classes.button}>
+                        Add to cart
+                    </Button>
+                    <Button variant="contained" color="secondary" className={classes.button}>
+                        Book now
+                    </Button>
                     <IconButton
                         className={classnames(classes.expand, {
                             [classes.expandOpen]: this.state.expanded,

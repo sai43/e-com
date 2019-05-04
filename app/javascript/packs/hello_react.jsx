@@ -5,11 +5,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
-import ProductsList from '../components/products/productsList'
+import PrimarySearchAppBar from '../components/header/navigation'
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    <ProductsList />,
+    <PrimarySearchAppBar />,
     document.body.appendChild(document.createElement('div')),
   )
 })

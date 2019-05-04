@@ -41,11 +41,10 @@ class ProductsList extends  Component {
         const products = this.state.products;
         return (
             <div className={classes.root}>
-                <Login/>
                 <Grid container spacing={24} style={{padding: 24}}>
                     { products.map((currentProduct, index )=>(
-                        <Grid item xs={12} sm={6} lg={4} xl={3}>
-                            <ProductCard key={index} product={currentProduct} />
+                        <Grid item key={index} xs={12} sm={6} lg={4} xl={3}>
+                            <ProductCard  product={currentProduct} />
                         </Grid>
                     ))}
                 </Grid>

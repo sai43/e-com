@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import {
@@ -79,9 +79,5 @@ class Login extends Component {
         )
     }
 }
-function mapStateToProps(state){
-    return {
-        count: state.counterReducer,
-    };
-}
+
 export default Login;
