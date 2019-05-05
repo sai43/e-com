@@ -93,3 +93,7 @@ gem 'active_model_serializers', '~> 0.10.0'
 
 gem 'graphiql-rails', group: :development
 gem 'rack-cors', :require => 'rack/cors'
+
+group :production do
+  gem 'rails_12factor'
+end

@@ -3,16 +3,14 @@ class User < ApplicationRecord
   has_many :orders, dependent: :destroy
   has_many :todos, foreign_key: :created_by
 
-  # attr_accessor :remember_token, :activation_token, :reset_token
-  # before_save { email.downcase! }
-  # before_save { self.email = email.downcase }
-  # before_create :create_activation_digest
+  before_save { email.downcase! }
+  before_save { self.email = email.downcase }
 
-  # validates :name, presence: true, length: { maximum: 50 }
-  # validates :email, presence: true, length: { maximum: 255 }, email: true,
-  #           format: /@/,
-  #           uniqueness: { case_sensitive: false }
-  # validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
+  validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
+  validates :name, presence: true, length: { maximum: 50 }
+  validates :email, presence: true, length: { maximum: 255 }, email: true,
+            format: /@/,
+            uniqueness: { case_sensitive: false }
 
   # encrypt password
   has_secure_password
