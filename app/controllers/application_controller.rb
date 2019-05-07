@@ -1,22 +1,26 @@
 class ApplicationController < ActionController::Base
+  include Response
+  include ExceptionHandler
+
   include ApplicationHelper
+  include SessionsHelper
+
   # protect_from_forgery with: :null_session
   # protect_from_forgery unless: -> { request.format.json? }
   protect_from_forgery unless: -> { request.format.json? || request.request_method == "OPTIONS" }
 
-  include SessionsHelper
-
-  # include CorsHelper
-  # before_action :cors_set_access_control_headers
-  # before_action :cors_preflight_check
-
-  # skip_before_filter :verify_authenticity_token
-  # protect_from_forgery prepend: true, with: :exception
-  # before_action :authenticate_user!
-  # before_action :set_bug, only: [:show, :edit, :update]
+  # called before every action on controllers
+  before_action :authorize_request
+  attr_reader :current_user
   # before_action :set_cart
 
   private
+
+  # Check for valid request token and return user
+  def authorize_request
+    @current_user = (AuthorizeApiRequest.new(request.headers).call)[:user]
+  end
+
 
   def set_cart
     if session[:cart_id]

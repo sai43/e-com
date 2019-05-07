@@ -1,6 +1,28 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types';
+import ProductCard from './productCard'
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Login from '../sessions/new'
 
-export default  class ProductsList extends  Component {
+const styles = theme => ({
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+        overflow: 'hidden',
+        backgroundColor: theme.palette.background.paper,
+    },
+    title: {
+        color: theme.palette.primary.light,
+    },
+    titleBar: {
+        background:
+            'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
+    },
+});
+
+class ProductsList extends  Component {
 
     state = {
         products: []
@@ -11,34 +33,29 @@ export default  class ProductsList extends  Component {
     }
 
     getAllProducts = () => {
-        const csrfToken = document.querySelector('meta[name=csrf-token]').getAttribute('content');
-        fetch('/graphql', {
-            method: 'POST',
-            headers: {'content-type': 'application/json', 'X-CSRF-Token': csrfToken},
-            body: JSON.stringify(
-                { query: `
-                    query {
-                          products {
-                            id
-                            title
-                            price
-                          }  
-                        }
-                ` })
-        }).then(response => {
-            return response.json()
-        }).then(response => {
-            this.setState({products: response.data.products})
-        })
+        $.getJSON('/api/v1/products/index', (response) => { this.setState({ products: response }) });
     };
+
     render () {
-        const products = this.state.products
+        const { classes } = this.props;
+        const products = this.state.products;
         return (
-          <div>
-              {products.map((product, index )=>(
-                  <h2>{ product.title } - { product.price }</h2>
-                  ))}
-          </div>
+            <div className={classes.root}>
+                <Grid container spacing={24} style={{padding: 24}}>
+                    { products.map((currentProduct, index )=>(
+                        <Grid item key={index} xs={12} sm={6} lg={4} xl={3}>
+                            <ProductCard  product={currentProduct} />
+                        </Grid>
+                    ))}
+                </Grid>
+            </div>
         );
     }
+
 }
+
+ProductsList.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(ProductsList);

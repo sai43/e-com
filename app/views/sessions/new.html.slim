@@ -1,2 +1,20 @@
-h1 Sessions#new
-p Find me in app/views/sessions/new.html.slim
+#auth-wrapper.login.login--border
+  .login__header
+    %p=I18n.t('login.signin')
+    %img.ttweb-logo{:src => "/images/tt-web-login-logo.svg"}
+    #login-form-container.login__form
+      = form_for(resource, :as => resource_name, :url => session_path(resource_name), :class => "new_user", :id => "new_user") do |f|
+        .error-container
+          - if notice
+            %span.notice= notice
+          - if alert || params[:notice] == "true"
+            %span.alert= alert || flash[:alert] || "#{I18n.t('login.invalid_credentials_text')}."
+        .input-containers.input-icon.email
+          = f.label :email
+          = f.text_field :email, :id => "user_email"
+        .input-containers.input-icon.password
+          = f.label :password
+          = f.password_field :password, :id => 'user_password'
+        = button_tag "#{I18n.t('login.submit_button_text')}"
+      .login__userlinks
+        = link_to "#{I18n.t('login.forgot_password_txt')}", new_password_path(resource_name), :class => "login__sm-text"

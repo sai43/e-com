@@ -1,5 +1,21 @@
 Rails.application.routes.draw do
 
+
+  namespace :api do
+    namespace :v1, defaults: { format: 'json' } do
+      get 'products/index'
+      resources :users
+      resources :products
+      resources :orders
+      post 'login', to: 'authentication#authenticate'
+      post 'signup', to: 'users#create'
+
+      resources :todos do
+        resources :items
+      end
+    end
+  end
+
   if Rails.env.development?
     mount GraphiQL::Rails::Engine, at: '/graphiql', graphql_path: '/graphql'
   end
