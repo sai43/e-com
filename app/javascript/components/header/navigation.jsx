@@ -17,6 +17,10 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import ProductsList from "../products/productsList";
+import { Provider } from 'react-redux';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import configureStore from '../configureStore';
+const store = configureStore;
 
 const styles = theme => ({
     root: {
@@ -168,59 +172,13 @@ class PrimarySearchAppBar extends React.Component {
         );
 
         return (
-            <div className={classes.root}>
-                <AppBar position="static">
-                    <Toolbar>
-                        <IconButton className={classes.menuButton} color="inherit" aria-label="Open drawer">
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-                           E-Com
-                        </Typography>
-                        <div className={classes.search}>
-                            <div className={classes.searchIcon}>
-                                <SearchIcon />
-                            </div>
-                            <InputBase
-                                placeholder="Search…"
-                                classes={{
-                                    root: classes.inputRoot,
-                                    input: classes.inputInput,
-                                }}
-                            />
-                        </div>
-                        <div className={classes.grow} />
-                        <div className={classes.sectionDesktop}>
-                            <IconButton color="inherit">
-                                <Badge badgeContent={4} color="secondary">
-                                    <MailIcon />
-                                </Badge>
-                            </IconButton>
-                            <IconButton color="inherit">
-                                <Badge badgeContent={17} color="secondary">
-                                    <NotificationsIcon />
-                                </Badge>
-                            </IconButton>
-                            <IconButton
-                                aria-owns={isMenuOpen ? 'material-appbar' : undefined}
-                                aria-haspopup="true"
-                                onClick={this.handleProfileMenuOpen}
-                                color="inherit"
-                            >
-                                <AccountCircle />
-                            </IconButton>
-                        </div>
-                        <div className={classes.sectionMobile}>
-                            <IconButton aria-haspopup="true" onClick={this.handleMobileMenuOpen} color="inherit">
-                                <MoreIcon />
-                            </IconButton>
-                        </div>
-                    </Toolbar>
-                </AppBar>
-                {renderMenu}
-                {renderMobileMenu}
-                {renderProductsList}
-            </div>
+            <Provider store={store}>
+                <BrowserRouter>
+                    <Switch>
+                         <Route exact path='/' render={() => { renderProductsList }} />
+                    </Switch>
+                </BrowserRouter>
+            </Provider>
         );
     }
 }
